@@ -7,7 +7,7 @@ Open AI RESTful API sample for Python
 Make sure you have the following software installed:
 
 - Python 3.11 or higher
-- Use to [FastAPI](https://fastapi.tiangolo.com/)
+- Use to [FastAPI](https://fastapi.tiangolo.com/) and [poetry](https://python-poetry.org/)
 
 ## Installation
 
@@ -20,6 +20,8 @@ poetry install
 ```
 
 ### Container(Docker)
+
+TBD
 
 ## Usage
 
@@ -42,11 +44,13 @@ setting for [environments.py](./environments.py)
 ```python
 OPENAI_API_KEY: str = os.getenv('OPENAI_API_KEY', 'your openai api key')
 OPENAI_ORGANIZATION: str = os.getenv('OPENAI_ORGANIZATION', 'your openai organization')
+OPENAI_MODEL: str = os.getenv('OPENAI_MODEL', 'gpt-3.5-turbo')  # Use to Open AI Model(default: 3.5)
 ```
 
 ## Endpoints
 
-TBD
+- GET `/` - Get status(use to healthcheck)
+- POST `/chat` - Create a new messages
 
 ## Deploy
 
