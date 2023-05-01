@@ -1,11 +1,16 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Depends
 import uvicorn
 
-from environments import OPENAI_MODEL
+from environments import OPENAI_MODEL, OPENAI_ORGANIZATION, OPENAI_API_KEY
+from ai.engine import OpenAI
 from ai.chat import Request, Response
 from ai.schema import Messages
 
 app = FastAPI()
+
+
+def _engine() -> OpenAI:
+    return OpenAI(api_key=OPENAI_API_KEY, organization=OPENAI_ORGANIZATION, model=OPENAI_MODEL)
 
 
 @app.get("/")
@@ -15,9 +20,9 @@ def read_root():
 
 
 @app.post("/chat")
-def chat(request: Request):
-    # TODO: Generate
-    messages: Messages = Messages(size=len(request.messages), messages=request.messages)
+def chat(request: Request, engine: OpenAI = Depends(_engine)):
+    # TODO: Validator
+    messages: Messages = engine.create(request.messages)
     response: Response = Response(model=OPENAI_MODEL, chat=messages)
     return response
 
