@@ -1,7 +1,8 @@
 from typing import List
 
 from pydantic import BaseModel
-from ai.schema import Message
+
+from ai.schema import Messages, Message
 
 
 class Request(BaseModel):
@@ -9,5 +10,5 @@ class Request(BaseModel):
 
 
 class Response(BaseModel):
-    size: int
-    messages: List[Message]
+    model: str
+    chat: Messages

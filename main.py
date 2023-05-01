@@ -1,8 +1,9 @@
-from typing import Dict
 from fastapi import FastAPI
 import uvicorn
 
+from environments import OPENAI_MODEL
 from ai.chat import Request, Response
+from ai.schema import Messages
 
 app = FastAPI()
 
@@ -14,10 +15,11 @@ def read_root():
 
 
 @app.post("/chat")
-def chat(request: Request) -> Dict:
+def chat(request: Request):
     # TODO: Generate
-    response: Response = Response(**{'size': len(request.messages), 'messages': request.messages})  # type: ignore
-    return response.dict  # type: ignore
+    messages: Messages = Messages(size=len(request.messages), messages=request.messages)
+    response: Response = Response(model=OPENAI_MODEL, chat=messages)
+    return response
 
 
 if __name__ == '__main__':
