@@ -4,9 +4,9 @@ from enum import Enum
 
 
 class Role(Enum):
-    SYSTEM = 'system'
-    USER = 'user'
-    ASSISTANT = 'assistant'
+    SYSTEM = "system"
+    USER = "user"
+    ASSISTANT = "assistant"
 
 
 @dataclass

@@ -14,10 +14,10 @@ class RequestForm(BaseModel):
         for m in messages:
             # check role
             if m.role not in [r.value for r in Role]:
-                raise TypeError(f'Invalid Parameter for role: {m.role}')
+                raise TypeError(f"Invalid Parameter for role: {m.role}")
             # check content
             if len(m.content) <= 0:
-                raise ValueError(f'Not content')
+                raise ValueError(f"Not content")
         return messages
 
 
