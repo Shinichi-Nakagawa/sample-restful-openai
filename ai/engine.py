@@ -2,8 +2,12 @@ from typing import List, Dict
 
 import openai
 from openai.openai_object import OpenAIObject
+from openai.error import RateLimitError
 from ai.schema import Message, Messages
 
+
+class OpenAIException(Exception):
+    pass
 
 class OpenAI:
     def __init__(self, api_key: str, organization: str, model: str):
@@ -11,14 +15,17 @@ class OpenAI:
         self.organization: str = organization
         self.model: str = model
 
-    def create(self, messages: List[Message]) -> Messages:
+    async def create(self, messages: List[Message]) -> Messages:
         openai.organization = self.organization
         openai.api_key = self.api_key
 
-        _response: OpenAIObject = openai.ChatCompletion.create(
-            model=self.model,
-            messages=[{'role': m.role, 'content': m.content} for m in messages]
-        )
+        try:
+            _response: OpenAIObject = await openai.ChatCompletion.acreate(
+                model=self.model,
+                messages=[{'role': m.role, 'content': m.content} for m in messages]
+            )
+        except RateLimitError as e:
+            raise OpenAIException('OpenAI Ratelimit')
         # 会話のラリーをそのまま返す
         new_messages: List[Message] = list()
         for r in _response.choices:

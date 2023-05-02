@@ -1,11 +1,10 @@
 from typing import Dict
-from fastapi import FastAPI, Depends
+from fastapi import FastAPI, Depends, HTTPException
 import uvicorn
 
 from environments import OPENAI_MODEL, OPENAI_ORGANIZATION, OPENAI_API_KEY
-from ai.engine import OpenAI
-from ai.chat import Request, Response
-from ai.schema import Messages
+from ai.engine import OpenAI, OpenAIException
+from ai.chat import RequestForm, ResponseBody
 
 app = FastAPI()
 
@@ -25,10 +24,13 @@ def index() -> Dict[str, str]:
 
 
 @app.post("/chat")
-def chat(request: Request, engine: OpenAI = Depends(_engine)) -> Response:
+async def chat(request: RequestForm, engine: OpenAI = Depends(_engine)) -> ResponseBody:
     # TODO: Validator
-    messages: Messages = engine.create(request.messages)
-    response: Response = Response(model=OPENAI_MODEL, chat=messages)
+    try:
+        messages = await engine.create(request.messages)
+        response = ResponseBody(model=OPENAI_MODEL, chat=messages)
+    except OpenAIException as e:
+        raise HTTPException(status_code=500, detail=str(e))
     return response
 
 
