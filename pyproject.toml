@@ -5,7 +5,6 @@ description = "Sample RESTful API for Open AI"
 authors = ["shinyorke <spirits.is.my.rader@gmail.com>"]
 license = "MIT"
 readme = "README.md"
-packages = [{include = "sample_restful_openai"}]
 
 [tool.poetry.dependencies]
 python = ">=3.11"
