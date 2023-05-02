@@ -1,8 +1,5 @@
 name: Backend
 on: push
-defaults:
-  run:
-    working-directory: .
 jobs:
   test:
     name: test
