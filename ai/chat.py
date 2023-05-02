@@ -1,27 +1,41 @@
-from typing import List
-from dataclasses import dataclass
+from typing import List, Dict
 
-from pydantic import BaseModel, validator
-
-from ai.schema import Messages, Message, Role
-
-
-class RequestForm(BaseModel):
-    messages: List[Message]
-
-    @validator("messages")
-    def validate_messages(cls, messages):
-        for m in messages:
-            # check role
-            if m.role not in [r.value for r in Role]:
-                raise TypeError(f"Invalid Parameter for role: {m.role}")
-            # check content
-            if len(m.content) <= 0:
-                raise ValueError(f"Not content")
-        return messages
+import openai
+from openai.openai_object import OpenAIObject
+from openai.error import RateLimitError
+from ai.schema import Message, Messages
 
 
-@dataclass
-class ResponseBody:
-    model: str
-    chat: Messages
+class OpenAIException(Exception):
+    pass
+
+
+class OpenAI:
+    def __init__(self, api_key: str, organization: str, model: str):
+        self.api_key: str = api_key
+        self.organization: str = organization
+        self.model: str = model
+
+    async def create(self, messages: List[Message]) -> Messages:
+        openai.organization = self.organization
+        openai.api_key = self.api_key
+
+        try:
+            _response: OpenAIObject = await openai.ChatCompletion.acreate(
+                model=self.model, messages=[{"role": m.role, "content": m.content} for m in messages]
+            )
+            # 会話のラリーをそのまま返す
+            new_messages: List[Message] = list()
+            for r in _response.choices:
+                response_message: Dict[str, str] = r["message"]
+                _m: Message = Message(
+                    index=r.get("index"),
+                    role=str(response_message.get("role")),
+                    content=str(response_message.get("content")).strip(),
+                )
+                new_messages.append(_m)
+        except RateLimitError as _:
+            raise OpenAIException("OpenAI Ratelimit")
+        except Exception as e:
+            raise OpenAIException(f"Other Exception: {str(e)}")
+        return Messages(size=len(new_messages), messages=new_messages)

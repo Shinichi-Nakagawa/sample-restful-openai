@@ -1,12 +1,5 @@
 from dataclasses import dataclass
 from typing import List
-from enum import Enum
-
-
-class Role(Enum):
-    SYSTEM = "system"
-    USER = "user"
-    ASSISTANT = "assistant"
 
 
 @dataclass

@@ -1,0 +1,26 @@
+name: Backend
+on: push
+defaults:
+  run:
+    working-directory: .
+jobs:
+  test:
+    name: test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
+        with:
+          python-version: 3.11
+      - name: Run image
+        uses: abatilo/actions-poetry@v2.0.0
+        with:
+          poetry-version: 1.4.2
+      - name: Install & test
+        run: poetry install
+      - name: type check
+        run: poetry run mypy .
+      - name: code check
+        run: poetry run black .
+      - name: unit test
+        run: poetry run pytest .

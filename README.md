@@ -52,6 +52,25 @@ OPENAI_MODEL: str = os.getenv('OPENAI_MODEL', 'gpt-3.5-turbo')  # Use to Open AI
 - GET `/` - Get status(use to healthcheck)
 - POST `/chat` - Create a new messages, use to [Create chat completion](https://platform.openai.com/docs/api-reference/chat/create)
 
+## Test
+
+### type check
+
+```bash
+poetry run mypy .
+```
+
+### code check
+
+```bash
+poetry run black .
+```
+### unit test
+
+```bash
+poetry run pytest .
+```
+
 ## Deploy
 
 ### Cloud Run

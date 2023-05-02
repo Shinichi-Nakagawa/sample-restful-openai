@@ -3,8 +3,8 @@ from fastapi import FastAPI, Depends, HTTPException
 import uvicorn
 
 from environments import OPENAI_MODEL, OPENAI_ORGANIZATION, OPENAI_API_KEY
-from ai.engine import OpenAI, OpenAIException
-from ai.chat import RequestForm, ResponseBody
+from ai.chat import OpenAI, OpenAIException
+from ai.interface import RequestForm, ResponseBody
 
 app = FastAPI()
 
