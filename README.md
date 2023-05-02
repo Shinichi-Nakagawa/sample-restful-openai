@@ -21,7 +21,11 @@ poetry install
 
 ### Container(Docker)
 
-TBD
+```bash
+docker compose build
+docker compose up
+
+```
 
 ## Usage
 
