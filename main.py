@@ -4,9 +4,10 @@ from fastapi import FastAPI
 from starlette.middleware.cors import CORSMiddleware
 import uvicorn
 
+from environments import DOCS_OPENAPI_URL
 from ai import app as openai_app
 
-app = FastAPI()
+app = FastAPI(docs_url=DOCS_OPENAPI_URL)
 
 app.add_middleware(
     CORSMiddleware,
