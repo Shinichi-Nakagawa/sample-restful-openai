@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "sample-restful-openai"
-version = "0.1.0"
+version = "1.0.0"
 description = "Sample RESTful API for Open AI"
 authors = ["shinyorke <spirits.is.my.rader@gmail.com>"]
 license = "MIT"

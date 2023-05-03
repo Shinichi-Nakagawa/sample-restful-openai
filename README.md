@@ -49,12 +49,13 @@ setting for [environments.py](./environments.py)
 OPENAI_API_KEY: str = os.getenv('OPENAI_API_KEY', 'your openai api key')
 OPENAI_ORGANIZATION: str = os.getenv('OPENAI_ORGANIZATION', 'your openai organization')
 OPENAI_MODEL: str = os.getenv('OPENAI_MODEL', 'gpt-3.5-turbo')  # Use to Open AI Model(default: 3.5)
+DOCS_OPENAPI_URL: str = os.getenv("DOCS_OPENAPI_URL")  # OpenAPI docs url(default: None)
 ```
 
 ## Endpoints
 
 - GET `/` - Get status(use to healthcheck)
-- POST `/chat` - Create a new messages, use to [Create chat completion](https://platform.openai.com/docs/api-reference/chat/create)
+- POST `/openai/chat` - Create a new messages, use to [Create chat completion](https://platform.openai.com/docs/api-reference/chat/create)
 
 ## Test
 
@@ -79,4 +80,20 @@ poetry run pytest .
 
 ### Cloud Run
 
-TBD
+#### Create Repository(1st Time only.)
+
+create repository for artifacts
+
+```bash
+gcloud artifacts repositories create restful-openapi \
+    --repository-format=Docker \
+    --location=asia-northeast1 \
+    --description="Open AI RESTful API sample for Python" \
+    --async
+```
+
+image build and deploy
+
+```bash
+sh ./deploy_cloudrun.sh ${your google cloud project id} ${imagetag}
+```
