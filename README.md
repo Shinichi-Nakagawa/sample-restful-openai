@@ -80,4 +80,20 @@ poetry run pytest .
 
 ### Cloud Run
 
-TBD
+#### Create Repository(1st Time only.)
+
+create repository for artifacts
+
+```bash
+gcloud artifacts repositories create restful-openapi \
+    --repository-format=Docker \
+    --location=asia-northeast1 \
+    --description="Open AI RESTful API sample for Python" \
+    --async
+```
+
+image build and deploy
+
+```bash
+sh ./deploy_cloudrun.sh ${your google cloud project id} ${imagetag}
+```
