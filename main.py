@@ -7,7 +7,10 @@ import uvicorn
 from environments import DOCS_OPENAPI_URL
 from ai import app as openai_app
 
-app = FastAPI(docs_url=DOCS_OPENAPI_URL)
+if DOCS_OPENAPI_URL:
+    app = FastAPI(docs_url=f"/{DOCS_OPENAPI_URL}")
+else:
+    app = FastAPI()
 
 app.add_middleware(
     CORSMiddleware,
