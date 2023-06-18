@@ -8,9 +8,14 @@ from environments import DOCS_OPENAPI_URL
 from ai import app as openai_app
 
 if DOCS_OPENAPI_URL:
+    # change docs url
     app = FastAPI(docs_url=f"/{DOCS_OPENAPI_URL}")
 else:
+    # default docs url
     app = FastAPI()
+
+# TODO Use Production（disable docs url）
+# app =FastAPI(docs_url=None)
 
 app.add_middleware(
     CORSMiddleware,
